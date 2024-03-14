@@ -54,7 +54,16 @@
           "password": "12345",
           "avatar": "https://mighty.tools/mockmind-api/content/cartoon/9.jpg"}]
         }
-      }
+      },
+      "GET /api/incomecat": {
+        "description": "serves an array of all income categories",
+        "queries": [],
+        "exampleResponse": [{ "incomecategory_id": 1, "incomecategory_name": "Business" },
+        { "incomecategory_id": 2, "incomecategory_name": "Lottery" },
+        { "incomecategory_id": 3, "incomecategory_name": "Salary" },
+        { "incomecategory_id": 4, "incomecategory_name": "Passive income" },
+        { "incomecategory_id": 5, "incomecategory_name": "Present" }]
+      },
 
 
 }
