@@ -1,0 +1,60 @@
+{
+    "GET /api": {
+        "description": "serves up a json representation of all the available endpoints of the api",
+        "queries": [],
+        "exampleResponse": {
+        }
+      },
+      "GET /api/users": {
+        "description": "serves an array of all users",
+        "queries": ["email"],
+        "exampleResponse": {
+          "users": [{ "first_name": "Tim",
+          "last_name": "Smith",
+          "email": "tsmith@gmail.com",
+          "password": "12345",
+          "avatar": "https://mighty.tools/mockmind-api/content/cartoon/9.jpg"}]
+        }
+      },
+      "GET /api/users/:id": {
+        "description": "returns a user by their id",
+        "queries": [],
+        "exampleResponse": {
+          "users": [{ "first_name": "Tim",
+          "last_name": "Smith",
+          "email": "tsmith@gmail.com",
+          "password": "12345",
+          "avatar": "https://mighty.tools/mockmind-api/content/cartoon/9.jpg"}]
+        }
+      },
+      "PATCH /api/users/:id": {
+        "description": "updates  users data by their id",
+        "queries": [],
+        "exampleResponse": {
+          "users": [{ "first_name": "Timmy",
+          "last_name": "Smith",
+          "email": "tsmith@gmail.com",
+          "password": "12345",
+          "avatar": "https://mighty.tools/mockmind-api/content/cartoon/9.jpg"}]
+        }
+      },
+      "DELETE /api/users/:id": {
+        "description": "deletes a user by their id",
+        "queries": [],
+        "exampleResponse": {
+        }
+      },
+      "POST /api/users": {
+        "description": "add new  user",
+        "queries": [],
+        "exampleResponse": {
+          "users": [{ "first_name": "Timmy",
+          "last_name": "Smith",
+          "email": "tsmith@gmail.com",
+          "password": "12345",
+          "avatar": "https://mighty.tools/mockmind-api/content/cartoon/9.jpg"}]
+        }
+      }
+
+
+}
