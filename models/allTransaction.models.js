@@ -33,23 +33,23 @@ module.exports.fetchAllTransactionsById = (userid, time)=>{
     FROM (
         SELECT category as cardcategory, transaction_type as card_transaction, amountPence as card_amountPence, date as card_date 
         FROM cardTransaction  WHERE user_id = $1 ${timePlaceholder}
-    ) FULL OUTER JOIN (
+    ) AS cardtransactiontable FULL OUTER JOIN (
         SELECT category as cashcategory, transaction_type as cash_transaction, amountPence as cash_amountPence, date as cash_date
         FROM cashTransaction  WHERE user_id = $1 ${timePlaceholder} 
         
-    )
+    ) AS cashtransactiontable
     ON card_date = cash_date 
     FULL OUTER JOIN (
         SELECT category as savingscategory, transaction_type as savings_transaction, amountPence as savings_amountPence, date as savings_date
         FROM savingsTransaction  WHERE user_id = $1 ${timePlaceholder} 
         
-    )
+    ) AS savingstransactiontable
     ON card_date = savings_date 
     FULL OUTER JOIN (
         SELECT category as investmentcategory, transaction_type as investment_transaction, amountPence as investment_amountPence, date as investment_date
         FROM investmentTransaction  WHERE user_id = $1 ${timePlaceholder} 
         
-    )
+    ) AS investmenttransactiontable
     ON card_date = investment_date
     `
 
