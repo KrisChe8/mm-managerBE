@@ -916,13 +916,13 @@ describe('api', ()=>{
     })
 
 
-    describe('GET TOTAL EXPENSES /api/totalexpenses/:userid', ()=>{
+    describe.only('GET TOTAL EXPENSES /api/totalexpenses/:userid', ()=>{
         test('GET: 200 and total expenses by userId', ()=>{
             return request(app).get('/api/totalexpenses/1')
             .expect(200)
             .then(({body})=>{
                 const {totalExpenses} = body;
-               
+            console.log(totalExpenses)
                 expect(totalExpenses).not.toHaveLength(0);
                 for(let key in totalExpenses){
                     expect(totalExpenses[key].hasOwnProperty("total_card")).toBe(true);
@@ -1686,14 +1686,14 @@ describe('api', ()=>{
         })
     })
     
-    describe.only('GET: 200 /api', ()=>{
+    describe('GET: 200 /api', ()=>{
         test('GET: 200 /api', ()=>{
             return request(app)
             .get('/api')
             .expect(200)
             .then(({body})=>{
                 const {instructions} = body;
-                console.log(instructions)
+              
             })
         })
     })
