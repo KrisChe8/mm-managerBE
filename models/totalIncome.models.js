@@ -38,23 +38,23 @@ module.exports.fetchTotalIncomeById = (userid, time, category)=>{
         SELECT category as cardcategory, SUM(COALESCE(amountPence,0 )) as total_card
         FROM cardTransaction  WHERE user_id = $1 AND transaction_type = $2 ${timePlaceholder}
         GROUP BY category
-    ) FULL OUTER JOIN (
+    ) AS cardtransactiontable FULL OUTER JOIN (
         SELECT category as cashcategory, SUM(COALESCE (amountPence, 0)) as total_cash
         FROM cashTransaction  WHERE user_id = $1 AND transaction_type = $2 ${timePlaceholder} 
         GROUP BY category
-    )
+    ) AS cashtransactiontable
     ON cardcategory = cashcategory 
     FULL OUTER JOIN(
         SELECT category as savingscategory, SUM(COALESCE(amountPence, 0)) as total_savings
         FROM savingsTransaction  WHERE user_id = $1 AND transaction_type = $2 ${timePlaceholder} 
         GROUP BY category
-    )
+    ) AS savingstransactiontable
     ON cardcategory=savingscategory
     FULL OUTER JOIN(
         SELECT category as investmentcategory, SUM(COALESCE(amountPence,0)) as total_investment
         FROM investmentTransaction  WHERE user_id = $1 AND transaction_type = $2 ${timePlaceholder} 
         GROUP BY category
-    )
+    ) AS investmenttransactiontable
     ON cardcategory=investmentcategory `
 
    
