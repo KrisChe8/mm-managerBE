@@ -15,8 +15,13 @@ const path = `${__dirname}/../.env.${ENV}`;
 require("dotenv").config({
   path: path
 })
-if (!process.env.DATABASE_NAME) {
+const config = {}
+if (ENV === 'production'){
+  config.connectionString = process.env.DATABASE_URL;
+  config.max = 2;
+}
+if (!process.env.DATABASE_NAME && !process.env.DATABASE_URL) {
   throw new Error('DATABASE_NAME not set');
 }
 
-module.exports = new Pool();
+module.exports = new Pool(config);
