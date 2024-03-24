@@ -5,7 +5,7 @@
         "exampleResponse": {
         }
       },
-      "GET /api/users": {
+      "GET /api/users?email": {
         "description": "serves an array of all users",
         "queries": ["email"],
         "exampleResponse": {
@@ -56,7 +56,7 @@
         }
       },
       "GET /api/incomecat": {
-        "description": "serves an array of all income categories",
+        "description": "serves an array of all income categories sorted by name",
         "queries": [],
         "exampleResponse": [{ "incomecategory_id": 1, "incomecategory_name": "Business" },
         { "incomecategory_id": 2, "incomecategory_name": "Lottery" },
@@ -64,6 +64,705 @@
         { "incomecategory_id": 4, "incomecategory_name": "Passive income" },
         { "incomecategory_id": 5, "incomecategory_name": "Present" }]
       },
+      "POST /api/incomecat": {
+        "description": "insert new income category to db and returns just posted data",
+        "queries": [],
+        "exampleResponse": {
+            "category": { "incomecategory_id": 6, "incomecategory_name": "Found"}
+        } 
+      },
+      "DELETE /api/incomecat/id": {
+        "description": "delete income category tby id and send no respond back",
+        "queries": [],
+        "exampleResponse":{}
+      },
+      "GET /api/expensescat": {
+        "description": "serves an array of all expenses categories sorted by name",
+        "queries": [],
+        "exampleResponse": {
+            "categories": [
+                { "expensescategory_id": 1, "expensescategory_name": "Bills" },
+                { "expensescategory_id": 4, "expensescategory_name": "Broadband bills" }
+            ]
+        }
+      },
+      "POST /api/expensescat": {
+        "description": "insert new expenses category to db and returns just posted data",
+        "queries": [],
+        "exampleResponse": {
+            "category": { "expensescategory_id": 6, "expensescategory_name": "Broadband bills" }
+        } 
+      },
+      "DELETE /api/expensescat/id": {
+        "description": "delete expenses category tby id and send no respond back",
+        "queries": [],
+        "exampleResponse":{}
+      },
+      "GET /api/accounttype": {
+        "description": "serves an array of all account types sorted by name",
+        "queries": [],
+        "exampleResponse": {
+            "accounts": [
+                { "accounttype_id": 1, "accounttype_name": "Card" },
+                { "accounttype_id": 2, "accounttype_name": "Cash" }
+            ]
+        }
+      },
+      "POST /api/accounttype": {
+        "description": "insert new account type  to db and returns just posted data",
+        "queries": [],
+        "exampleResponse": {
+            "account": { "accounttype_id": 11, "accounttype_name": "Wallet" }
+        } 
+      },
+      "DELETE /api/accounttype/:id": {
+        "description": "delete account type by id and send no respond back",
+        "queries": [],
+        "exampleResponse":{}
+      },
+
+      "GET /api/cardincome/:userid": {
+        "description": "serves an array of all card income transactions for certain user BY user_id ordered by date DESC",
+        "queries": ["category", "time" ],
+        "exampleResponse": [{
+            "cardtransaction_id": 1,
+            "transaction_type": "income",
+            "amountpence": 450000,
+            "category": "Salary",
+            "date": "2024-01-10T06:00:00.000Z",
+            "user_id": 1
+          },
+          {
+            "cardtransaction_id": 2,
+            "transaction_type": "income",
+            "amountpence": 90000,
+            "category": "Business",
+            "date": "2024-01-16T06:00:00.000Z",
+            "user_id": 1
+          }]
+      },
+      "GET /api/cardincome/:userid/total": {
+        "description": "returns a total_cardIncome value - total card income for user",
+        "queries": ["time (allowed values: 'today', 'week', '10days', 'month', 'year')"],
+        "exampleResponse": {
+          "cardIncome": [ { "total_cardincome": "3061100" } ]
+        }
+    },
+    "GET /api/cardincome/:userid/total?grouped=true/false": {
+        "description": "returns a total_cardIncome value - total card income for user by categories",
+        "queries": ["grouped (allowed values: true and false)"],
+        "exampleResponse": {
+          "cardIncome": [
+            { "category": "Business", "total_cardincome": "690000" },
+            { "category": "Passive income", "total_cardincome": "181100" },
+            { "category": "Salary", "total_cardincome": "2190000" }
+          ]
+        }
+    },
+    "GET /api/cashincome/:userid": {
+        "description": "returns an array of  objects of card income ordered by date DESC ",
+        "queries": ["category"],
+        "exampleResponse": {
+          "cashIncome": [
+            {
+                "cashtransaction_id": 8,
+                "transaction_type": "income",
+                "amountpence": 45500,
+                "category": "Lottery",
+                "date": "2024-02-10T06:00:00.000Z",
+                "user_id": 1
+              }
+          ]
+        }
+    },
+    "GET /api/cashincome/:userid/total?grouped=true&time=week": {
+        "description": "returns total card income",
+        "queries": ["category"],
+        "exampleResponse": {
+          "cashIncome": [
+            { "category": "Present", "total_cashincome": "20000" }
+          ]
+        }
+    },
+    "GET /api/investmentincome/:userid": {
+        "description": "returns an array of  objects of investment income ordered by date DESC ",
+        "queries": ["category"],
+        "exampleResponse": {
+          "investmentIncome": [
+            {
+                " investmenttransaction_id": 8,
+                "transaction_type": "income",
+                "amountpence": 45500,
+                "category": "Lottery",
+                "date": "2024-02-10T06:00:00.000Z",
+                "user_id": 1
+              }
+          ]
+        }
+    },
+    "GET /api/investmentincome/:userid/total?grouped=true&time=week": {
+        "description": "returns total investment income",
+        "queries": ["grouped", "time"],
+        "exampleResponse": {
+          "investmentIncome": [
+            { "category": "Present", "total_investmentincome": "20000" }
+          ]
+        }
+    },
+    "GET /api/savingsincome/:userid": {
+        "description": "returns an array of  objects of savings income ordered by date DESC ",
+        "queries": ["category"],
+        "exampleResponse": {
+          "savingsIncome": [
+            {
+                " savingstransaction_id": 8,
+                "transaction_type": "income",
+                "amountpence": 45500,
+                "category": "Lottery",
+                "date": "2024-02-10T06:00:00.000Z",
+                "user_id": 1
+              }
+          ]
+        }
+    },
+    "GET /api/savingsincome/:userid/total?grouped=true&time=week": {
+        "description": "returns total savings income",
+        "queries": ["grouped", "time"],
+        "exampleResponse": {
+          "savingsIncome": [
+            { "category": "Present", "total_savingsincome": "20000" }
+          ]
+        }
+    },
+    "GET /api/totalincome/:userid": {
+        "description": "returns an array of objects with total income values by category ",
+        "queries": ["time"],
+        "exampleResponse": {
+          "totalIncome": [
+            {
+              "cardcategory": "Business",
+              "total_card": "600000",
+              "cashcategory": null,
+              "total_cash": null,
+              "savingscategory": "Business",
+              "total_savings": "23000",
+              "investmentcategory": "Business",
+              "total_investment": "56000",
+              "category": "Business",
+              "totalforcategory": "679000"
+            },
+            {
+              "cardcategory": null,
+              "total_card": null,
+              "cashcategory": "Lottery",
+              "total_cash": "45500",
+              "savingscategory": null,
+              "total_savings": null,
+              "investmentcategory": null,
+              "total_investment": null,
+              "category": "Lottery",
+              "totalforcategory": "45500"
+            },
+            {
+              "cardcategory": null,
+              "total_card": null,
+              "cashcategory": "Present",
+              "total_cash": "20000",
+              "savingscategory": null,
+              "total_savings": null,
+              "investmentcategory": null,
+              "total_investment": null,
+              "category": "Present",
+              "totalforcategory": "20000"
+            },
+            {
+              "cardcategory": "Salary",
+              "total_card": "580000",
+              "cashcategory": null,
+              "total_cash": null,
+              "savingscategory": "Salary",
+              "total_savings": "22000",
+              "investmentcategory": null,
+              "total_investment": null,
+              "category": "Salary",
+              "totalforcategory": "602000"
+            },
+            {
+              "cardcategory": null,
+              "total_card": null,
+              "cashcategory": null,
+              "total_cash": null,
+              "savingscategory": null,
+              "total_savings": null,
+              "investmentcategory": "Passive income",
+              "total_investment": "56000",
+              "category": "Passive income",
+              "totalforcategory": "56000"
+            }
+          ]
+        }
+    },
+
+
+    "GET /api/totalexpenses/:userid": {
+        "description": "returns an array of objects with total EXPENSES values by category ",
+        "queries": ["time"],
+        "exampleResponse": {
+          "totalExpenses": [
+            {
+              "cardcategory": "Food",
+              "total_card": "600000",
+              "cashcategory": null,
+              "total_cash": null,
+              "savingscategory": "Food",
+              "total_savings": "23000",
+              "investmentcategory": "Food",
+              "total_investment": "56000",
+              "category": "Food",
+              "totalforcategory": "679000"
+            },
+            {
+              "cardcategory": null,
+              "total_card": null,
+              "cashcategory": "Clothing",
+              "total_cash": "45500",
+              "savingscategory": null,
+              "total_savings": null,
+              "investmentcategory": null,
+              "total_investment": null,
+              "category": "Clothing",
+              "totalforcategory": "45500"
+            },
+            {
+              "cardcategory": null,
+              "total_card": null,
+              "cashcategory": "Car",
+              "total_cash": "20000",
+              "savingscategory": null,
+              "total_savings": null,
+              "investmentcategory": null,
+              "total_investment": null,
+              "category": "Car",
+              "totalforcategory": "20000"
+            },
+            {
+              "cardcategory": "Bills",
+              "total_card": "580000",
+              "cashcategory": null,
+              "total_cash": null,
+              "savingscategory": "Bills",
+              "total_savings": "22000",
+              "investmentcategory": null,
+              "total_investment": null,
+              "category": "Bills",
+              "totalforcategory": "602000"
+            },
+            {
+              "cardcategory": null,
+              "total_card": null,
+              "cashcategory": null,
+              "total_cash": null,
+              "savingscategory": null,
+              "total_savings": null,
+              "investmentcategory": "Pets",
+              "total_investment": "56000",
+              "category": "Pets",
+              "totalforcategory": "56000"
+            }
+          ]
+        }
+    },
+
+
+    "GET /api/alltransactions/:userid": {
+        "description": "returns an array of objects with all transactions by user ID ",
+        "queries": ["time"],
+        "exampleResponse": {
+          "allTransactions": [
+            {
+                "cardcategory": "Salary",
+                "card_transaction": "income",
+                "card_amountpence": 2500,
+                "card_date": "2024-03-18T06:00:00.000Z",
+                "cashcategory": null,
+                "cash_transaction": null,
+                "cash_amountpence": null,
+                "cash_date": null,
+                "savingscategory": null,
+                "savings_transaction": null,
+                "savings_amountpence": null,
+                "savings_date": null,
+                "investmentcategory": null,
+                "investment_transaction": null,
+                "investment_amountpence": null,
+                "investment_date": null,
+                "date": "2024-03-18T06:00:00.000Z"
+              },
+              {
+                "cardcategory": "Sport",
+                "card_transaction": "expenses",
+                "card_amountpence": 2500,
+                "card_date": "2024-03-18T06:00:00.000Z",
+                "cashcategory": null,
+                "cash_transaction": null,
+                "cash_amountpence": null,
+                "cash_date": null,
+                "savingscategory": null,
+                "savings_transaction": null,
+                "savings_amountpence": null,
+                "savings_date": null,
+                "investmentcategory": null,
+                "investment_transaction": null,
+                "investment_amountpence": null,
+                "investment_date": null,
+                "date": "2024-03-18T06:00:00.000Z"
+              },
+              {
+                "cardcategory": null,
+                "card_transaction": null,
+                "card_amountpence": null,
+                "card_date": null,
+                "cashcategory": null,
+                "cash_transaction": null,
+                "cash_amountpence": null,
+                "cash_date": null,
+                "savingscategory": null,
+                "savings_transaction": null,
+                "savings_amountpence": null,
+                "savings_date": null,
+                "investmentcategory": "Lost",
+                "investment_transaction": "expenses",
+                "investment_amountpence": 3000,
+                "investment_date": "2024-03-17T06:00:00.000Z",
+                "date": "2024-03-17T06:00:00.000Z"
+              },
+              {
+                "cardcategory": null,
+                "card_transaction": null,
+                "card_amountpence": null,
+                "card_date": null,
+                "cashcategory": "Pets",
+                "cash_transaction": "expenses",
+                "cash_amountpence": 1000,
+                "cash_date": "2024-03-17T06:00:00.000Z",
+                "savingscategory": null,
+                "savings_transaction": null,
+                "savings_amountpence": null,
+                "savings_date": null,
+                "investmentcategory": null,
+                "investment_transaction": null,
+                "investment_amountpence": null,
+                "investment_date": null,
+                "date": "2024-03-17T06:00:00.000Z"
+              },
+              {
+                "cardcategory": "Business",
+                "card_transaction": "income",
+                "card_amountpence": 210000,
+                "card_date": "2024-03-16T06:00:00.000Z",
+                "cashcategory": "Present",
+                "cash_transaction": "income",
+                "cash_amountpence": 20000,
+                "cash_date": "2024-03-16T06:00:00.000Z",
+                "savingscategory": "Business",
+                "savings_transaction": "income",
+                "savings_amountpence": 11000,
+                "savings_date":"2024-03-16T06:00:00.000Z",
+                "investmentcategory": "Passive income",
+                "investment_transaction": "income",
+                "investment_amountpence": 23000,
+                "investment_date": "2024-03-16T06:00:00.000Z",
+                "date": "2024-03-16T06:00:00.000Z"
+              }
+              
+          ]
+        }
+    },
+
+    "GET /api/plannedexpenses/:userid?duration=week": {
+        "description": "returns an array of objects of planned expenses by user id",
+        "queries": ["time , duration (week/10days/month/year)"],
+        "exampleResponse": {
+          "cardIncome": [
+            {
+                "plannedexpenses_id": 8,
+                "plannedexpenses_category": "Entertainment",
+                "amountpence": 2000,
+                "total_days": "week",
+                "date_start": "2024-03-20T06:00:00.000Z",
+                "user_id": 1
+              }
+          ]
+        }
+    },
+    "POST /api/plannedexpenses": {
+        "description": "inserts new planned expenses and returns an objects of inserted planned expenses ",
+        "queries": [],
+        "exampleResponse": {
+          "cardIncome": [
+            {
+                "plannedexpenses_id": 9,
+                "plannedexpenses_category": "Car",
+                "amountpence": 5000,
+                "total_days": "week",
+                "date_start": "2024-03-20T12:24:38.485Z",
+                "user_id": 1
+              }
+          ]
+        }
+    },
+    "DELETE /api/plannedexpenses/remove/:id": {
+        "description": "delete planned expenses by its ID ",
+        "queries": [],
+        "exampleResponse": {}
+    },
+    "DELETE /api/plannedexpenses/:userid": {
+        "description": "delete ALL planned expenses by USER ID ",
+        "queries": [],
+        "exampleResponse": {}
+    },
+    "POST /api/cardtransaction": {
+        "description": "inserts new card transaction and returns an objects of inserted card transaction ",
+        "queries": [],
+        "exampleResponse": {
+          "cardTransaction": [
+            {
+                "cardtransaction_id": 27,
+                "transaction_type": "income",
+                "amountpence": 140000,
+                "category": "Salary",
+                "date": "2024-03-20T14:34:00.737Z",
+                "user_id": 1
+              }
+          ]
+        }
+    },
+    "DELETE /api/cardtransaction/:id": {
+        "description": "delete card transaction by its ID ",
+        "queries": [],
+        "exampleResponse": {}
+    },
+    "DELETE /api/cardtransaction/user/:userid": {
+        "description": "delete card transaction by USER ID ",
+        "queries": [],
+        "exampleResponse": {}
+    },
+    "PATCH /api/cardtransaction/:id": {
+        "description": "update card transaction data by its ID ",
+        "queries": [],
+        "exampleResponse": {
+            "cardTransaction": {
+                "cardtransaction_id": 27,
+                "transaction_type": "income",
+                "amountpence": 146000,
+                "category": "Salary",
+                "date": "2024-03-20T14:34:00.737Z",
+                "user_id": 1
+              }
+        }
+    },
+    "POST /api/cashtransaction": {
+        "description": "inserts new cash transaction and returns an objects of inserted cash transaction ",
+        "queries": [],
+        "exampleResponse": {
+          "cashTransaction": [
+            {
+                "cashtransaction_id": 27,
+                "transaction_type": "income",
+                "amountpence": 140000,
+                "category": "Salary",
+                "date": "2024-03-20T14:34:00.737Z",
+                "user_id": 1
+              }
+          ]
+        }
+    },
+    "GET /api/cashtransaction": {
+        "description": "get all cash transaction ",
+        "queries": [],
+        "exampleResponse": {
+          "cashTransaction": [
+            {
+                "cashtransaction_id": 27,
+                "transaction_type": "income",
+                "amountpence": 140000,
+                "category": "Salary",
+                "date": "2024-03-20T14:34:00.737Z",
+                "user_id": 1
+              }, 
+              {
+                "cashtransaction_id": 28,
+                "transaction_type": "expenses",
+                "amountpence": 10000,
+                "category": "Bills",
+                "date": "2024-03-20T14:34:00.737Z",
+                "user_id": 2
+              }
+          ]
+        }
+    },
+    "GET /api/cardtransaction": {
+        "description": "get all card transaction ",
+        "queries": [],
+        "exampleResponse": {
+          "cardtransaction": [
+            {
+                "cardtransaction_id": 27,
+                "transaction_type": "income",
+                "amountpence": 140000,
+                "category": "Salary",
+                "date": "2024-03-20T14:34:00.737Z",
+                "user_id": 1
+              }, 
+              {
+                "cardtransaction_id": 28,
+                "transaction_type": "expenses",
+                "amountpence": 10000,
+                "category": "Bills",
+                "date": "2024-03-20T14:34:00.737Z",
+                "user_id": 2
+              }
+          ]
+        }
+    },
+    "GET /api/savingstransaction": {
+        "description": "get an array of all  objects of savings transactions ",
+        "queries": [],
+        "exampleResponse": {
+          "savingsTransaction": [
+            {
+                "savingstransaction_id": 27,
+                "transaction_type": "income",
+                "amountpence": 140000,
+                "category": "Salary",
+                "date": "2024-03-20T14:34:00.737Z",
+                "user_id": 1
+              }
+          ]
+        }
+    },
+    "GET /api/investmenttransaction": {
+        "description": "get an array of all  objects of investment transactions ",
+        "queries": [],
+        "exampleResponse": {
+          "investmentTransaction": [
+            {
+                " investmenttransaction_id": 27,
+                "transaction_type": "income",
+                "amountpence": 140000,
+                "category": "Salary",
+                "date": "2024-03-20T14:34:00.737Z",
+                "user_id": 1
+              }
+          ]
+        }
+    },
+    "DELETE /api/cashtransaction/:id": {
+        "description": "delete cash transaction by its ID ",
+        "queries": [],
+        "exampleResponse": {}
+    },
+    "DELETE /api/cashtransaction/user/:userid": {
+        "description": "delete cash transaction by USER ID ",
+        "queries": [],
+        "exampleResponse": {}
+    },
+    "PATCH /api/cashtransaction/:id": {
+        "description": "update cash transaction data by its ID ",
+        "queries": [],
+        "exampleResponse": {
+            "cashTransaction": {
+                "cashtransaction_id": 27,
+                "transaction_type": "income",
+                "amountpence": 146000,
+                "category": "Salary",
+                "date": "2024-03-20T14:34:00.737Z",
+                "user_id": 1
+              }
+        }
+    },
+    "POST /api/investmenttransaction": {
+        "description": "inserts new investment transaction and returns an objects of inserted investment transaction ",
+        "queries": [],
+        "exampleResponse": {
+          "investTransaction": [
+            {
+                "investmenttransaction_id": 27,
+                "transaction_type": "income",
+                "amountpence": 140000,
+                "category": "Salary",
+                "date": "2024-03-20T14:34:00.737Z",
+                "user_id": 1
+              }
+          ]
+        }
+    },
+    "DELETE /api/investmenttransaction/:id": {
+        "description": "delete investment transaction by its ID ",
+        "queries": [],
+        "exampleResponse": {}
+    },
+    "DELETE /api/investmenttransaction/user/:userid": {
+        "description": "delete investment transaction by USER ID ",
+        "queries": [],
+        "exampleResponse": {}
+    },
+    "PATCH /api/investmenttransaction/:id": {
+        "description": "update investment transaction data by its ID ",
+        "queries": [],
+        "exampleResponse": {
+            "investTransaction": {
+                "investmenttransaction_id": 27,
+                "transaction_type": "income",
+                "amountpence": 146000,
+                "category": "Salary",
+                "date": "2024-03-20T14:34:00.737Z",
+                "user_id": 1
+              }
+        }
+    },
+    "POST /api/savingstransaction": {
+        "description": "inserts new savings transaction and returns an objects of inserted savings transaction ",
+        "queries": [],
+        "exampleResponse": {
+          "savingsTransaction": [
+            {
+                "savingstransaction_id": 27,
+                "transaction_type": "income",
+                "amountpence": 140000,
+                "category": "Salary",
+                "date": "2024-03-20T14:34:00.737Z",
+                "user_id": 1
+              }
+          ]
+        }
+    },
+    "DELETE /api/savingstransaction/:id": {
+        "description": "delete savings transaction by its ID ",
+        "queries": [],
+        "exampleResponse": {}
+    },
+    "DELETE /api/savingstransaction/user/:userid": {
+        "description": "delete savings transaction by USER ID ",
+        "queries": [],
+        "exampleResponse": {}
+    },
+    "PATCH /api/savingstransaction/:id": {
+        "description": "update investment transaction data by its ID ",
+        "queries": [],
+        "exampleResponse": {
+            "savingsTransaction": {
+                "savingstransaction_id": 27,
+                "transaction_type": "income",
+                "amountpence": 146000,
+                "category": "Salary",
+                "date": "2024-03-20T14:34:00.737Z",
+                "user_id": 1
+              }
+        }
+    }
+
+
 
 
 }

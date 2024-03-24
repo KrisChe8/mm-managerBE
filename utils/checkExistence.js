@@ -40,8 +40,27 @@ module.exports.categoryDoesNotExist = (tableName, rowName, value) =>{
 module.exports.checkCategoryExists = (tableName, rowName, id) =>{
     return db.query(`SELECT * FROM ${tableName} WHERE ${rowName} = $1 `, [id])
     .then(({rows})=>{
-        if(rows.length === 0){
+        if(rows.length == 0){
             return Promise.reject({status: 404, msg: "Category does not exist"})
+        }
+    })
+}
+
+module.exports.checkPlannedExpensesExistence = (id) =>{
+    return db.query(`SELECT * FROM plannedExpenses WHERE plannedexpenses_id = $1`, [id])
+    .then(({rows})=>{
+        if(rows.length == 0){
+            return Promise.reject({status: 404, msg: "Planned Expenses with this id does not exist"})
+        }
+    })
+}
+
+
+module.exports.checkTransactionExistence = (id, tableName, rowname) =>{
+    return db.query(`SELECT * FROM ${tableName} WHERE ${rowname} = $1`, [id])
+    .then(({rows})=>{
+        if(rows.length == 0){
+            return Promise.reject({status: 404, msg: "There is no transaction with this id"})
         }
     })
 }
