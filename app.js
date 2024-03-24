@@ -19,9 +19,9 @@ app.use(express.json());
 const indexRouter = require("./routes/indexRoute");
 app.use('/api', indexRouter)
 
-app.listen(process.env.PORT || 4000, ()=>{
-    console.log("Server listening on PORT 4000")
-})
+// app.listen(process.env.PORT || 4000, ()=>{
+//     console.log("Server listening on PORT 4000")
+// })
 
 
 app.use(psqlErrorHandler);
